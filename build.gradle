@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group 'com.blamejared'
+version '1.0.0'
+archivesBaseName = 'ModTemplate'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly gradleApi()
+
+    compile group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+}
+
+jar.manifest.mainAttributes([
+        'Implementation-Title'  : project.name,
+        'Implementation-Version': project.version
+])
+
+test {
+    useJUnitPlatform()
+}
