@@ -43,6 +43,7 @@ public class Utils {
             project.getLogger()
                     .warn("Unable to load " + Constants.ENV_SECRET_FILE + "(\"" + secret_file + "\") as it does not exist!");
         }
+        project.getLogger().lifecycle("Done Injecting Secrets");
     }
     
     
