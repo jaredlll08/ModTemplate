@@ -1,0 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'com.blamejared', name: 'ModTemplate', version: '1.0.+', changing: true
+    }
+}
+
+apply plugin: 'com.blamejared.modtemplate'
+
+
+task get() {
+    doLast {
+
+        File file = new File("changelog.md")
+        file.write("### Current version: " + project.version)
+
+        System.out.println("Changelog generated!")
+    }
+}
