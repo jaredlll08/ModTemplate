@@ -10,6 +10,7 @@ import org.gradle.api.Task;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -22,11 +23,11 @@ public class UpdateVersionTracker implements Action<Task> {
     @Override
     public void execute(Task task) {
         
+        Project project = task.getProject();
+        ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
+        VersionTrackerExtension versionTracker = extension.getVersionTracker();
+        String endpoint = versionTracker.getEndpoint();
         try {
-            Project project = task.getProject();
-            ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
-            VersionTrackerExtension versionTracker = extension.getVersionTracker();
-            String endpoint = versionTracker.getEndpoint();
             
             Map<String, String> body = new HashMap<>();
             body.put("author", versionTracker.getAuthor());
@@ -50,7 +51,11 @@ public class UpdateVersionTracker implements Action<Task> {
             }
             
         } catch(Exception e) {
+            if(e instanceof MalformedURLException) {
+                project.getLogger().error("Invalid endpoint provided! Provided: `" + endpoint + "`");
+            }
             e.printStackTrace();
+            
         }
     }
     

@@ -53,6 +53,7 @@ modTemplate {
         enabled true
         // Endpoint to post the new version to.
         // Secret value: "`versionTrackerAPI`".
+        // NOTE: This is printed in the log if a `MalformedURLException` is thrown!
         endpoint "https://updates.example.com"
         // Project Homepage To be displayed in the output json.
         // Secret value: "`versionTrackerAuthor`".
