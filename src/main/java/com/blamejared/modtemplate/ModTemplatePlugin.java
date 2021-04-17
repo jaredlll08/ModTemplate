@@ -1,33 +1,38 @@
 package com.blamejared.modtemplate;
 
-import org.gradle.api.*;
-
-import java.io.*;
+import com.blamejared.modtemplate.actions.DiscordWebhook;
+import com.blamejared.modtemplate.extensions.ModTemplateExtension;
+import com.blamejared.modtemplate.tasks.GenGitChangelog;
+import com.blamejared.modtemplate.tasks.UpdateVersionTracker;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
 
 
 public class ModTemplatePlugin implements Plugin<Project> {
     
+    private Project project;
+    private ModTemplateExtension extension;
+    
     @Override
     public void apply(Project project) {
         
-        project.task("genGitChangelog").doLast(task -> {
-            File file = new File("test.md");
-            System.out.println(file.getAbsolutePath());
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
-            File test = project.file("test");
-            System.out.println(test.getAbsolutePath());
-            try {
-                file.createNewFile();
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-            try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
-                bufferedWriter.write("Test!");
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            
-        });
+        this.project = project;
+        this.extension = project.getExtensions().create("modTemplate", ModTemplateExtension.class);
+        Utils.updateVersion(project);
+        Utils.injectSecrets(project);
+        this.extension.getVersionTracker().supplement(project);
+        this.extension.getWebhook().supplement(project);
+        
+        project.task("genGitChangelog").doLast(new GenGitChangelog()).onlyIf(this.extension.getChangelog()::onlyIf);
+        project.task("updateVersionTracker")
+                .doLast(new UpdateVersionTracker())
+                .onlyIf(this.extension.getVersionTracker()::onlyIf);
+        
+        
+        project.getTasks()
+                .getByName("curseforge")
+                .doLast(new DiscordWebhook())
+                .onlyIf(this.extension.getWebhook()::onlyIf);
     }
     
 }

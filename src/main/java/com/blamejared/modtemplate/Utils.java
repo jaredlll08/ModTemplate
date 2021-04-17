@@ -1,4 +1,75 @@
 package com.blamejared.modtemplate;
 
+import com.blamejared.modtemplate.extensions.ModTemplateExtension;
+import groovy.json.JsonSlurper;
+import org.gradle.api.Project;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.Map;
+
 public class Utils {
+    
+    public static void updateVersion(Project project) {
+        
+        project.afterEvaluate(project1 -> {
+            String version = (String) project.getVersion();
+            if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
+                version += "." + System.getenv(Constants.ENV_BUILD_NUMBER);
+            }
+            project.setVersion(version);
+        });
+    }
+    
+    public static void injectSecrets(Project project) {
+        
+        String secret_file = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
+        File secretsFile = project.file(secret_file);
+        project.getLogger().lifecycle("Injecting Secrets");
+        if(secretsFile.exists()) {
+            project.getLogger().lifecycle("Attempting to load secrets.");
+            Object parsedSecrets = new JsonSlurper().parse(secretsFile);
+            if(parsedSecrets instanceof Map) {
+                @SuppressWarnings("unchecked") Map<String, Object> map = (Map<String, Object>) parsedSecrets;
+                map.forEach((s, o) -> project.getExtensions().add(s, o));
+                project.getLogger().lifecycle("Loaded " + map.size() + " secrets!");
+            } else {
+                project.getLogger()
+                        .error("Unable to load Secrets as the JsonSlurper did not provide a Map, isntead it provided: " + parsedSecrets
+                                .getClass());
+            }
+        } else if(System.getenv().containsKey(Constants.ENV_SECRET_FILE)) {
+            
+            project.getLogger()
+                    .warn("Unable to load " + Constants.ENV_SECRET_FILE + "(\"" + secret_file + "\") as it does not exist!");
+        }
+    }
+    
+    
+    public static String getCIChangelog(Project project, ModTemplateExtension extension) {
+        
+        try {
+            ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+            String gitHash = System.getenv("GIT_COMMIT");
+            String gitPrevHash = System.getenv("GIT_PREVIOUS_COMMIT");
+            String repo = extension.getChangelog()
+                    .getRepo() + "/commit/";
+            if(gitHash != null && gitPrevHash != null) {
+                project.exec(execSpec -> execSpec.commandLine("git")
+                        .args("log", "--pretty=tformat: -[%s](" + repo + "%H) - %aN ", gitPrevHash + "..." + gitHash)
+                        .setStandardOutput(stdout));
+                return stdout.toString().trim();
+            } else if(gitHash != null) {
+                project.exec(execSpec -> execSpec.commandLine("git")
+                        .args("log", "--pretty=tformat: -[%s](" + repo + "%H) - %aN ", "-1", gitHash)
+                        .setStandardOutput(stdout));
+                return stdout.toString().trim();
+            } else {
+                return "Unavailable";
+            }
+        } catch(Exception ignored) {
+            return "Unavailable";
+        }
+    }
+    
 }

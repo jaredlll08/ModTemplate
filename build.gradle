@@ -8,6 +8,8 @@ group 'com.blamejared'
 version '1.0.0'
 archivesBaseName = 'ModTemplate'
 
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
 repositories {
     mavenCentral()
 }
@@ -18,7 +20,7 @@ dependencies {
     compile group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-
+    compile group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.1.0'
 }
 
 jar.manifest.mainAttributes([
@@ -26,6 +28,23 @@ jar.manifest.mainAttributes([
         'Implementation-Version': project.version
 ])
 
-test {
-    useJUnitPlatform()
+publishing {
+
+    publications {
+
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
+
+    repositories {
+
+        maven {
+
+            url "file://" + System.getenv("local_maven")
+        }
+    }
 }
