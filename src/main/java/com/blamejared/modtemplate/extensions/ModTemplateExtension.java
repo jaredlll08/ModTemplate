@@ -31,8 +31,11 @@ public class ModTemplateExtension {
         
         versionTrackerClosure.setDelegate(versionTracker);
         versionTrackerClosure.call();
-        if(versionTracker.getHomepage() == null || versionTracker.getHomepage().isEmpty()) {
+        if(versionTracker.getHomepage() == null || versionTracker.getHomepage().trim().isEmpty()) {
             versionTracker.homepage(getCurseHomepage());
+        }
+        if(versionTracker.getProjectName() == null || versionTracker.getProjectName().trim().isEmpty()) {
+            versionTracker.projectName(getProjectName());
         }
     }
     

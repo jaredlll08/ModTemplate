@@ -55,6 +55,10 @@ modTemplate {
         // Secret value: "`versionTrackerAPI`".
         // NOTE: This is printed in the log if a `MalformedURLException` is thrown!
         endpoint "https://updates.example.com"
+        // Version Tracker project name.
+        // Secret value: "`versionTrackerProjectName`"
+        // Optional, will be replace by `projectName` from `modTemplate` if not provided.
+        projectName "example"
         // Project Homepage To be displayed in the output json.
         // Secret value: "`versionTrackerAuthor`".
         // Optional, will be replaced by `curseHomepage` if not provided.

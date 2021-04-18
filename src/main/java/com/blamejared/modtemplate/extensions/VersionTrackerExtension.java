@@ -9,6 +9,7 @@ public class VersionTrackerExtension extends ConditionalExtension {
     private String author;
     private String homepage;
     private String uid;
+    private String projectName;
     
     public void supplement(Project project) {
         
@@ -16,6 +17,7 @@ public class VersionTrackerExtension extends ConditionalExtension {
         this.author = (String) project.getProperties().get("versionTrackerAuthor");
         this.homepage = (String) project.getProperties().get("versionTrackerHomepage");
         this.uid = (String) project.getProperties().get("versionTrackerKey");
+        this.projectName = (String) project.getProperties().get("versionTrackerProjectName");
     }
     
     
@@ -57,6 +59,21 @@ public class VersionTrackerExtension extends ConditionalExtension {
     public String getUid() {
         
         return uid;
+    }
+    
+    public void uid(String uid) {
+        
+        this.uid = uid;
+    }
+    
+    public String getProjectName() {
+        
+        return projectName;
+    }
+    
+    public void projectName(String projectName) {
+        
+        this.projectName = projectName;
     }
     
 }
