@@ -41,7 +41,8 @@ public class Utils {
         } else if(System.getenv().containsKey(Constants.ENV_SECRET_FILE)) {
             
             project.getLogger()
-                    .warn("Unable to load " + Constants.ENV_SECRET_FILE + "(\"" + secret_file + "\") as it does not exist!");
+                    .warn("Unable to load " + Constants.ENV_SECRET_FILE + "as it does not exist! Tried: ");
+            project.getLogger().warn(secret_file);
         }
         project.getLogger().lifecycle("Done Injecting Secrets");
     }
