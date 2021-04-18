@@ -35,7 +35,7 @@ public class Utils {
                 project.getLogger().lifecycle("Loaded " + map.size() + " secrets!");
             } else {
                 project.getLogger()
-                        .error("Unable to load Secrets as the JsonSlurper did not provide a Map, isntead it provided: " + parsedSecrets
+                        .error("Unable to load Secrets as the JsonSlurper did not provide a Map, instead it provided: " + parsedSecrets
                                 .getClass());
             }
         } else if(System.getenv().containsKey(Constants.ENV_SECRET_FILE)) {
@@ -43,6 +43,8 @@ public class Utils {
             project.getLogger()
                     .warn("Unable to load " + Constants.ENV_SECRET_FILE + "as it does not exist! Tried: ");
             project.getLogger().warn(secret_file);
+        } else {
+            project.getLogger().lifecycle("Secrets file does not exist!");
         }
         project.getLogger().lifecycle("Done Injecting Secrets");
     }
