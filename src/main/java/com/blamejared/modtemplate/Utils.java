@@ -23,7 +23,11 @@ public class Utils {
     
     public static void injectSecrets(Project project) {
         
+        
         String secret_file = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
+        if(project.hasProperty(Constants.PROPERTY_SECRET_FILE)) {
+            secret_file = (String) project.property(Constants.PROPERTY_SECRET_FILE);
+        }
         File secretsFile = project.file(secret_file);
         project.getLogger().lifecycle("Injecting Secrets");
         if(secretsFile.exists()) {
@@ -44,7 +48,9 @@ public class Utils {
                     .warn("Unable to load " + Constants.ENV_SECRET_FILE + "as it does not exist! Tried: ");
             project.getLogger().warn(secret_file);
         } else {
-            project.getLogger().lifecycle("Secrets file does not exist!");
+            project.getLogger().lifecycle("Secrets file does not exist! Looked at: ");
+            project.getLogger().lifecycle(secret_file);
+            
         }
         project.getLogger().lifecycle("Done Injecting Secrets");
     }
