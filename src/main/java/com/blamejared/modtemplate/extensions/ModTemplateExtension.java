@@ -10,7 +10,7 @@ public class ModTemplateExtension {
     private WebhookExtension webhook = new WebhookExtension();
     private String mcVersion;
     private String curseHomepage;
-    private String projectName;
+    private String displayName;
     
     public ChangelogExtension getChangelog() {
         
@@ -35,7 +35,7 @@ public class ModTemplateExtension {
             versionTracker.homepage(getCurseHomepage());
         }
         if(versionTracker.getProjectName() == null || versionTracker.getProjectName().trim().isEmpty()) {
-            versionTracker.projectName(getProjectName());
+            versionTracker.projectName(getDisplayName());
         }
     }
     
@@ -71,14 +71,14 @@ public class ModTemplateExtension {
         this.curseHomepage = curseHomepage;
     }
     
-    public String getProjectName() {
+    public String getDisplayName() {
         
-        return projectName;
+        return displayName;
     }
     
-    public void projectName(String projectName) {
+    public void displayName(String displayName) {
         
-        this.projectName = projectName;
+        this.displayName = displayName;
     }
     
 }

@@ -6,6 +6,7 @@ import com.blamejared.modtemplate.tasks.GenGitChangelog;
 import com.blamejared.modtemplate.tasks.UpdateVersionTracker;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 
 
 public class ModTemplatePlugin implements Plugin<Project> {
@@ -28,11 +29,13 @@ public class ModTemplatePlugin implements Plugin<Project> {
                 .doLast(new UpdateVersionTracker())
                 .onlyIf(this.extension.getVersionTracker()::onlyIf);
         
-        
-        project.afterEvaluate(project1 -> project1.getTasks()
-                .getByName("curseforge")
-                .doLast(new DiscordWebhook())
-                .onlyIf(this.extension.getWebhook()::onlyIf));
+        project.afterEvaluate(project1 -> {
+            project1.getTasks()
+                    .stream()
+                    .filter(task -> task.getName().equals("curseforge"))
+                    .map(task -> task.doLast(new DiscordWebhook()))
+                    .forEach(task -> task.onlyIf(this.extension.getWebhook()::onlyIf));
+        });
         
     }
     

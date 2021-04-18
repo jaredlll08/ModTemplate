@@ -30,12 +30,12 @@ public class DiscordWebhook implements Action<Task> {
             return;
         }
         
-        Webhook webhook = new Webhook(extension.getWebhook().getUrl(), extension.getProjectName());
+        Webhook webhook = new Webhook(extension.getWebhook().getUrl(), extension.getDisplayName());
         
         Message message = new Message();
-        message.setUsername(extension.getProjectName());
+        message.setUsername(extension.getDisplayName());
         message.setContent(String.format("%s %s for Minecraft %s has been released! The download will be available soon.", extension
-                .getProjectName(), project.getVersion(), extension.getMcVersion()));
+                .getDisplayName(), project.getVersion(), extension.getMcVersion()));
         
         Embed embed = new Embed();
         embed.addField("Download", extension.getCurseHomepage() + "/files/" + newFileId, false);

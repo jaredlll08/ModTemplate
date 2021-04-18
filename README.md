@@ -31,8 +31,8 @@ modTemplate {
     mcVersion "1.16.5"
     // Link to the CurseForge project, used to generate file links and for the update tracker.
     curseHomepage "https://www.curseforge.com/minecraft/mc-mods/slimyboyos"
-    // Project name, used in the Discord webhook and the version tracker.
-    projectName "SlimyBoyos"
+    // Display name, used in the Discord webhook.
+    displayName "SlimyBoyos"
 
     // Changelog generation
     changelog {

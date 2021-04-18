@@ -31,7 +31,7 @@ public class UpdateVersionTracker implements Action<Task> {
             
             Map<String, String> body = new HashMap<>();
             body.put("author", versionTracker.getAuthor());
-            body.put("projectName", extension.getProjectName());
+            body.put("projectName", extension.getDisplayName());
             body.put("gameVersion", extension.getMcVersion());
             body.put("projectVersion", (String) project.getVersion());
             body.put("homepage", versionTracker.getHomepage());
@@ -40,7 +40,7 @@ public class UpdateVersionTracker implements Action<Task> {
             HttpsURLConnection req = (HttpsURLConnection) new URL(endpoint).openConnection();
             req.setRequestMethod("POST");
             req.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            req.setRequestProperty("User-Agent", extension.getProjectName() + " Tracker Gradle");
+            req.setRequestProperty("User-Agent", extension.getDisplayName() + " Tracker Gradle");
             req.setDoOutput(true);
             req.getOutputStream().write(JsonOutput.toJson(body).getBytes(StandardCharsets.UTF_8));
             
