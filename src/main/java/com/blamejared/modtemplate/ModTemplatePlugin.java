@@ -29,10 +29,11 @@ public class ModTemplatePlugin implements Plugin<Project> {
                 .onlyIf(this.extension.getVersionTracker()::onlyIf);
         
         
-        project.getTasks()
+        project.afterEvaluate(project1 -> project1.getTasks()
                 .getByName("curseforge")
                 .doLast(new DiscordWebhook())
-                .onlyIf(this.extension.getWebhook()::onlyIf);
+                .onlyIf(this.extension.getWebhook()::onlyIf));
+        
     }
     
 }
