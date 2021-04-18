@@ -66,12 +66,12 @@ public class Utils {
                     .getRepo() + "/commit/";
             if(gitHash != null && gitPrevHash != null) {
                 project.exec(execSpec -> execSpec.commandLine("git")
-                        .args("log", "--pretty=tformat: -[%s](" + repo + "%H) - %aN ", gitPrevHash + "..." + gitHash)
+                        .args("log", "--pretty=tformat:- [%s](" + repo + "%H) - %aN ", gitPrevHash + "..." + gitHash)
                         .setStandardOutput(stdout));
                 return stdout.toString().trim();
             } else if(gitHash != null) {
                 project.exec(execSpec -> execSpec.commandLine("git")
-                        .args("log", "--pretty=tformat: -[%s](" + repo + "%H) - %aN ", "-1", gitHash)
+                        .args("log", "--pretty=tformat:- [%s](" + repo + "%H) - %aN ", "-1", gitHash)
                         .setStandardOutput(stdout));
                 return stdout.toString().trim();
             } else {
