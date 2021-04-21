@@ -38,7 +38,7 @@ public class GenGitChangelog implements Action<Task> {
             
             project.exec(execSpec -> execSpec.commandLine("git")
                     .args("log", "--pretty=tformat:- [%s](" + extension.getChangelog()
-                            .getRepo() + "%H) - %aN - %cd", "--max-parents=1", "--date=local", firstCommit[0] + "..@")
+                            .getRepo() + "/commit/%H) - %aN - %cd", "--max-parents=1", "--date=local", firstCommit[0] + "..@")
                     .setStandardOutput(changesOS));
             
             changelogWriter.write("### Current version: " + project.getVersion() + "\n" + changesOS);
