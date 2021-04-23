@@ -44,6 +44,8 @@ modTemplate {
         repo "https://github.com/CraftTweaker/CraftTweaker"
         // Set by default, so you don't need this line. Used to determine when to start a new changelog (Won't have any commit before commits with this message).
         incrementRegex "(?<!\\\\)version\\s+push"
+        // Set by default, Used as the file name for the generated changelog.
+        changelogFile "changelog.md"
     }
     // Forge Version Tracker.
     // Note: Currently uses a proprietary closed source system.

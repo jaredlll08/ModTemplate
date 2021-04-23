@@ -7,6 +7,7 @@ public class ChangelogExtension extends ConditionalExtension {
     private String repo;
     private String incrementRegex = "(?<!\\\\)version\\s+push";
     private String firstCommit;
+    private String changelogFile = "changelog.md";
     
     public String getRepo() {
         
@@ -36,6 +37,16 @@ public class ChangelogExtension extends ConditionalExtension {
     public void firstCommit(String firstCommit) {
         
         this.firstCommit = firstCommit;
+    }
+    
+    public String getChangelogFile() {
+        
+        return changelogFile;
+    }
+    
+    public void changelogFile(String changelogFile) {
+        
+        this.changelogFile = changelogFile;
     }
     
 }
