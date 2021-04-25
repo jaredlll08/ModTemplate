@@ -86,3 +86,7 @@ modTemplate {
     }
 }
 ```
+
+# Notes
+
+The Jar task manifest fails to get the updated version (for `Implementation-Version`), so it will be overridden with the actual project version, regardless of what content was there before.

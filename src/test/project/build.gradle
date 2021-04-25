@@ -11,7 +11,8 @@ buildscript {
 apply plugin: 'com.blamejared.modtemplate'
 apply plugin: 'java'
 
-version = "3.1.0.11"
+version = "3.1.0"
+archivesBaseName = 'CraftTweaker-1.16.5'
 
 modTemplate {
     mcVersion "1.16.5"
@@ -31,5 +32,19 @@ modTemplate {
         enabled true
         curseId "254987"
         avatarUrl "https://media.forgecdn.net/avatars/130/894/636463564739010146.png"
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "crafttweaker",
+                "Specification-Vendor"    : "CraftTweaker",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.getVersion(),
+                "Implementation-Vendor"   : "CraftTweaker",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }
