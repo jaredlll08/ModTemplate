@@ -44,7 +44,7 @@ public class DiscordWebhook implements Action<Task> {
         embed.setColor(0xF16436);
         
         message.addEmbed(embed);
-        message.setAvatarUrl(extension.getWebhook().getAvatarUrl());
+//        message.setAvatarUrl(extension.getWebhook().getAvatarUrl());
         try {
             System.out.println("Sending message with a length of: " + message.getContent().length());
             webhook.sendMessage(message);
