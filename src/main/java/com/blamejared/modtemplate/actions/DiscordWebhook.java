@@ -11,8 +11,8 @@ import org.gradle.api.Task;
 import org.gradle.internal.impldep.com.google.gson.Gson;
 import org.gradle.internal.impldep.com.google.gson.GsonBuilder;
 import org.gradle.internal.impldep.com.google.gson.JsonPrimitive;
+import org.gradle.internal.impldep.com.google.gson.JsonElement;
 import org.gradle.internal.impldep.com.google.gson.JsonSerializer;
-import org.gradle.internal.impldep.org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
