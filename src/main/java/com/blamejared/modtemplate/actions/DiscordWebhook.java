@@ -48,7 +48,9 @@ public class DiscordWebhook implements Action<Task> {
             webhook.sendMessage(message);
         } catch(IOException e) {
             project.getLogger().error("Error while sending Discord Webhook!");
-            e.printStackTrace();
+            for(StackTraceElement stackTraceElement : e.getStackTrace()) {
+                System.out.println(stackTraceElement.toString().replaceAll(extension.getWebhook().getUrl(), "****"));
+            }
         }
         
     }
