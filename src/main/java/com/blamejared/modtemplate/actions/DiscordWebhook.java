@@ -39,7 +39,8 @@ public class DiscordWebhook implements Action<Task> {
         
         Embed embed = new Embed();
         embed.addField("Download", extension.getCurseHomepage() + "/files/" + newFileId, false);
-        embed.addField("Change Log", Utils.getCIChangelog(project, extension), false);
+        String ciChangelog = Utils.getCIChangelog(project, extension);
+        embed.addField("Change Log", ciChangelog.length() >= 2000 ? "The changelog is too large to put in a Discord message. Please view it on CurseForge." : ciChangelog, false);
         embed.setColor(0xF16436);
         
         message.addEmbed(embed);
@@ -48,8 +49,9 @@ public class DiscordWebhook implements Action<Task> {
             webhook.sendMessage(message);
         } catch(IOException e) {
             project.getLogger().error("Error while sending Discord Webhook!");
+            System.out.println(e.toString().replaceAll(extension.getWebhook().getUrl(), "****"));
             for(StackTraceElement stackTraceElement : e.getStackTrace()) {
-                System.out.println(stackTraceElement.toString().replaceAll(extension.getWebhook().getUrl(), "****"));
+                System.out.println("\tat " + stackTraceElement.toString());
             }
         }
         
