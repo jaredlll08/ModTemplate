@@ -40,12 +40,13 @@ public class DiscordWebhook implements Action<Task> {
         Embed embed = new Embed();
         embed.addField("Download", extension.getCurseHomepage() + "/files/" + newFileId, false);
         String ciChangelog = Utils.getCIChangelog(project, extension);
-        embed.addField("Change Log", ciChangelog.length() >= 2000 ? "The changelog is too large to put in a Discord message. Please view it on CurseForge." : ciChangelog, false);
+        embed.addField("Change Log", ciChangelog.length() >= 1900 ? "The changelog is too large to put in a Discord message. Please view it on CurseForge." : ciChangelog, false);
         embed.setColor(0xF16436);
         
         message.addEmbed(embed);
         message.setAvatarUrl(extension.getWebhook().getAvatarUrl());
         try {
+            System.out.println("Sending message with a length of: " + message.getContent().length());
             webhook.sendMessage(message);
         } catch(IOException e) {
             project.getLogger().error("Error while sending Discord Webhook!");
