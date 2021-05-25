@@ -8,11 +8,22 @@ import com.diluv.schoomp.message.embed.Embed;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.internal.impldep.com.google.gson.Gson;
+import org.gradle.internal.impldep.com.google.gson.GsonBuilder;
+import org.gradle.internal.impldep.com.google.gson.JsonPrimitive;
+import org.gradle.internal.impldep.com.google.gson.JsonSerializer;
+import org.gradle.internal.impldep.org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DiscordWebhook implements Action<Task> {
+    
+    private static final JsonSerializer<OffsetDateTime> TIME_SERIALIZER = (s, t, c) -> new JsonPrimitive(s.format(DateTimeFormatter.ISO_INSTANT));
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(OffsetDateTime.class, TIME_SERIALIZER).create();
+    
     
     @Override
     public void execute(Task task) {
@@ -44,8 +55,10 @@ public class DiscordWebhook implements Action<Task> {
         embed.setColor(0xF16436);
         
         message.addEmbed(embed);
-//        message.setAvatarUrl(extension.getWebhook().getAvatarUrl());
+        message.setAvatarUrl(extension.getWebhook().getAvatarUrl());
         try {
+            final String encoded = GSON.toJson(message);
+            System.out.println(encoded);
             System.out.println("Sending message with a length of: " + message.getContent().length());
             webhook.sendMessage(message);
         } catch(IOException e) {
