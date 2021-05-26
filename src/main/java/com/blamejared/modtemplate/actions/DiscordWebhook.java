@@ -30,7 +30,7 @@ public class DiscordWebhook implements Action<Task> {
             return;
         }
         
-        Webhook webhook = new Webhook(extension.getWebhook().getUrl(), extension.getDisplayName());
+        Webhook webhook = new Webhook(extension.getWebhook().getUrl(), extension.getDisplayName(), true);
         
         Message message = new Message();
         message.setUsername(extension.getDisplayName());
