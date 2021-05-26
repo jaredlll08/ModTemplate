@@ -39,7 +39,7 @@ public class DiscordWebhook implements Action<Task> {
             ciChangelog = "Unavailable";
         }
         if(ciChangelog.length() >= 1500) {
-            ciChangelog = "The changelog is too large to put in a Discord message. Please view it on CurseForge."
+            ciChangelog = "The changelog is too large to put in a Discord message. Please view it on CurseForge.";
         }
         embed.addField("Change Log", ciChangelog, false);
         embed.setColor(0xF16436);
