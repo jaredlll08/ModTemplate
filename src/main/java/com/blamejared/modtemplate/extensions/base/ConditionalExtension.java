@@ -3,6 +3,7 @@ package com.blamejared.modtemplate.extensions.base;
 import org.gradle.api.Task;
 
 public abstract class ConditionalExtension {
+    
     private boolean enabled;
     
     public boolean isEnabled() {

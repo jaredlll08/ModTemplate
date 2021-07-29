@@ -2,12 +2,9 @@ package com.blamejared.modtemplate;
 
 import com.blamejared.modtemplate.actions.DiscordWebhook;
 import com.blamejared.modtemplate.extensions.ModTemplateExtension;
-import com.blamejared.modtemplate.tasks.GenGitChangelog;
-import com.blamejared.modtemplate.tasks.UpdateVersionTracker;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
+import com.blamejared.modtemplate.tasks.*;
+import org.gradle.api.*;
 import org.gradle.jvm.tasks.Jar;
-
 
 public class ModTemplatePlugin implements Plugin<Project> {
     
@@ -19,7 +16,6 @@ public class ModTemplatePlugin implements Plugin<Project> {
         
         this.project = project;
         this.extension = project.getExtensions().create("modTemplate", ModTemplateExtension.class);
-        Utils.updateVersion(project);
         Utils.injectSecrets(project);
         this.extension.getVersionTracker().supplement(project);
         this.extension.getWebhook().supplement(project);

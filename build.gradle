@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blamejared'
-version '1.0.0'
+version '2.0.0'
 if (System.getenv('BUILD_NUMBER') != null) {
     version += "." + System.getenv('BUILD_NUMBER')
 }

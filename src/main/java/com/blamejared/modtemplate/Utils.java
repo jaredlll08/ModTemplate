@@ -10,19 +10,7 @@ import java.util.Map;
 
 public class Utils {
     
-    public static void updateVersion(Project project) {
-        
-        project.afterEvaluate(project1 -> {
-            String version = (String) project.getVersion();
-            if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
-                version += "." + System.getenv(Constants.ENV_BUILD_NUMBER);
-            }
-            project.setVersion(version);
-        });
-    }
-    
     public static void injectSecrets(Project project) {
-        
         
         String secret_file = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
         if(project.hasProperty(Constants.PROPERTY_SECRET_FILE)) {

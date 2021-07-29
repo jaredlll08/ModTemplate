@@ -1,15 +1,9 @@
 package com.blamejared.modtemplate.tasks;
 
 import com.blamejared.modtemplate.extensions.ModTemplateExtension;
-import org.gradle.api.Action;
-import org.gradle.api.Project;
-import org.gradle.api.Task;
+import org.gradle.api.*;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class GenGitChangelog implements Action<Task> {
     

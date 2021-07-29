@@ -5,7 +5,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath group: 'com.blamejared', name: 'ModTemplate', version: '1.0.+', changing: true
+        classpath group: 'com.blamejared', name: 'ModTemplate', version: '2.0.+', changing: true
     }
 }
 apply plugin: 'com.blamejared.modtemplate'

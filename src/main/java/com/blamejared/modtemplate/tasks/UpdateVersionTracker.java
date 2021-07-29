@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 public class UpdateVersionTracker implements Action<Task> {
     
-    
     @Override
     public void execute(Task task) {
         

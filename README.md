@@ -88,5 +88,14 @@ modTemplate {
 ```
 
 # Notes
+As of version 2.0.0, automatic version updating from CI has been removed.
+You can use:
+```groovy
+String getBuildNumber() {
 
+    return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
+}
+```
+to get the build number.
+For 1.x:
 The Jar task manifest fails to get the updated version (for `Implementation-Version`), so it will be overridden with the actual project version, regardless of what content was there before.

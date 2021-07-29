@@ -1,7 +1,6 @@
 package com.blamejared.modtemplate.extensions;
 
-import groovy.lang.Closure;
-import groovy.lang.DelegatesTo;
+import groovy.lang.*;
 
 public class ModTemplateExtension {
     
