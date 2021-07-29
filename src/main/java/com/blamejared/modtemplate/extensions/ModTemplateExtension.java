@@ -10,6 +10,7 @@ public class ModTemplateExtension {
     private String mcVersion;
     private String curseHomepage;
     private String displayName;
+    private String modLoader;
     
     public ChangelogExtension getChangelog() {
         
@@ -78,6 +79,21 @@ public class ModTemplateExtension {
     public void displayName(String displayName) {
         
         this.displayName = displayName;
+    }
+    
+    public String getModLoader() {
+        
+        return modLoader;
+    }
+    
+    public boolean hasModLoader() {
+        
+        return modLoader != null && !modLoader.trim().isEmpty();
+    }
+    
+    public void modLoader(String modLoader) {
+        
+        this.modLoader = modLoader;
     }
     
 }

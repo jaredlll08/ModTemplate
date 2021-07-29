@@ -5,7 +5,9 @@ import com.blamejared.modtemplate.extensions.ModTemplateExtension;
 import com.diluv.schoomp.Webhook;
 import com.diluv.schoomp.message.Message;
 import com.diluv.schoomp.message.embed.Embed;
-import org.gradle.api.*;
+import org.gradle.api.Action;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,7 +20,9 @@ public class DiscordWebhook implements Action<Task> {
         Project project = task.getProject();
         ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
         
-        Object mainArtifact = project.getTasks().getByName("curseforge" + extension.getWebhook().getCurseId()).property("mainArtifact");
+        Object mainArtifact = project.getTasks()
+                .getByName("curseforge" + extension.getWebhook().getCurseId())
+                .property("mainArtifact");
         
         String newFileId = getFileId(mainArtifact);
         if(newFileId.isEmpty()) {
@@ -30,7 +34,7 @@ public class DiscordWebhook implements Action<Task> {
         
         Message message = new Message();
         message.setUsername(extension.getDisplayName());
-        message.setContent(String.format("%s %s for Minecraft %s has been released! The download will be available soon.", extension.getDisplayName(), project.getVersion(), extension.getMcVersion()));
+        message.setContent(String.format("%s %s for Minecraft %s has been released! The download will be available soon.", extension.getDisplayName() + (extension.hasModLoader() ? " " + extension.getModLoader() : ""), project.getVersion(), extension.getMcVersion()));
         
         Embed embed = new Embed();
         embed.addField("Download", extension.getCurseHomepage() + "/files/" + newFileId, false);

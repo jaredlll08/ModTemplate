@@ -33,7 +33,9 @@ modTemplate {
     curseHomepage "https://www.curseforge.com/minecraft/mc-mods/slimyboyos"
     // Display name, used in the Discord webhook.
     displayName "SlimyBoyos"
-
+    // name of the mod loader, used in the Discord webhook.
+    // Optional, will not mention the mod loader in the discord webhook if not provided.
+    modLoader "Forge"
     // Changelog generation
     changelog {
         // Enable changelog.md generation.
