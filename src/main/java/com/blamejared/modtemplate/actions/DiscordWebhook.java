@@ -34,7 +34,7 @@ public class DiscordWebhook implements Action<Task> {
         
         Message message = new Message();
         message.setUsername(extension.getDisplayName());
-        message.setContent(String.format("%s %s for Minecraft %s has been released! The download will be available soon.", extension.getDisplayName() + (extension.hasModLoader() ? " " + extension.getModLoader() : ""), project.getVersion(), extension.getMcVersion()));
+        message.setContent(String.format("%s %s for Minecraft %s has been released! The download will be available soon.", extension.getDisplayName() + (extension.hasModLoader() ? "(" + extension.getModLoader() + ")" : ""), project.getVersion(), extension.getMcVersion()));
         
         Embed embed = new Embed();
         embed.addField("Download", extension.getCurseHomepage() + "/files/" + newFileId, false);
