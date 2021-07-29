@@ -10,7 +10,15 @@ import java.util.Map;
 
 public class Utils {
     
+    public static String updatingVersion(String version) {
+        if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
+            version += "." + System.getenv(Constants.ENV_BUILD_NUMBER);
+        }
+        return version;
+    }
+    
     public static void injectSecrets(Project project) {
+        
         
         String secret_file = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
         if(project.hasProperty(Constants.PROPERTY_SECRET_FILE)) {
