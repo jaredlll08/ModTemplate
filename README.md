@@ -103,10 +103,10 @@ to get the build number.
 Alternatively, you can do the following:
 ```groovy
 
-    // after `apply plugin: 'com.blamejared.modtemplate'`
-    import com.blamejared.modtemplate.Utils
+// after `apply plugin: 'com.blamejared.modtemplate'`
+import com.blamejared.modtemplate.Utils
     
-    version = Utils.updatingVersion(mod_version)
+version = Utils.updatingVersion(mod_version)
 ```
 
 Which will update the version like before.
