@@ -99,5 +99,18 @@ String getBuildNumber() {
 }
 ```
 to get the build number.
+
+Alternatively, you can do the following:
+```groovy
+
+    // after `apply plugin: 'com.blamejared.modtemplate'`
+    import com.blamejared.modtemplate.Utils
+    
+    version = Utils.updatingVersion(mod_version)
+```
+
+Which will update the version like before.
+
 For 1.x:
+
 The Jar task manifest fails to get the updated version (for `Implementation-Version`), so it will be overridden with the actual project version, regardless of what content was there before.
