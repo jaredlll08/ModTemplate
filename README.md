@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'com.blamejared', name: 'ModTemplate', version: '1.+', changing: true
+        classpath group: 'com.blamejared', name: 'ModTemplate', version: '2.+', changing: true
     }
 }
 ```
