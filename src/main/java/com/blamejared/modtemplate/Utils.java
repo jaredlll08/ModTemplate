@@ -17,6 +17,13 @@ public class Utils {
         return version;
     }
     
+    public static String updatingSemVersion(String version) {
+        if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
+            version += "+" + System.getenv(Constants.ENV_BUILD_NUMBER);
+        }
+        return version;
+    }
+    
     public static void injectSecrets(Project project) {
         
         
