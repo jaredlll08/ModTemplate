@@ -26,7 +26,7 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    compile group: 'com.diluv.schoomp', name: 'Schoomp', version: '2.1.0+0'
+    compile group: 'com.diluv.schoomp', name: 'Schoomp', version: '1.2.6'
 }
 
 jar.manifest.mainAttributes([
