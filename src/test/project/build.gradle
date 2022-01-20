@@ -4,12 +4,12 @@ buildscript {
         mavenCentral()
         mavenLocal()
     }
-    dependencies {
-        classpath group: 'com.blamejared', name: 'ModTemplate', version: '2.0.+', changing: true
-    }
 }
-apply plugin: 'com.blamejared.modtemplate'
-apply plugin: 'java'
+
+plugins {
+    id "java"
+    id "com.blamejared.modtemplate" version "3.0.0"
+}
 
 version = "3.1.0"
 archivesBaseName = 'CraftTweaker-1.16.5'
@@ -27,11 +27,6 @@ modTemplate {
     versionTracker {
         enabled true
         author "Jared"
-    }
-    webhook {
-        enabled true
-        curseId "254987"
-        avatarUrl "https://media.forgecdn.net/avatars/130/894/636463564739010146.png"
     }
 }
 

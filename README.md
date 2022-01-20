@@ -2,26 +2,13 @@
 
 # Using
 
-Add the BlameJared maven to your `buildscript`.
-
 ```groovy
-buildscript {
-    repositories {
-        maven { url = 'https://maven.blamejared.com' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'com.blamejared', name: 'ModTemplate', version: '2.+', changing: true
-    }
+plugins {
+    id 'net.blamejared.modtemplate' version 'version_here'
 }
 ```
 
-Apply the plugin.
-
-```groovy
-apply plugin: 'com.blamejared.modtemplate'
-```
+Add the BlameJared maven to your `buildscript`.
 
 # Options
 
@@ -74,43 +61,5 @@ modTemplate {
         // Secret value: "`versionTrackerKey`".
         uid "00000000-0000-0000-0000-000000000000"
     }
-    // Discord Webhook .
-    webhook {
-        // Enable webhook sending.
-        enabled true
-        // Curse project ID, used to generate the file url.
-        curseId "254987"
-        // Webhook URL.
-        // Secret value: "`discordCFWebhook`".
-        url ""
-        // Avatar that the webhook should use.
-        avatarUrl "https://media.forgecdn.net/avatars/130/894/636463564739010146.png"
-    }
 }
 ```
-
-# Notes
-As of version 2.0.0, automatic version updating from CI has been removed.
-You can use:
-```groovy
-String getBuildNumber() {
-
-    return System.getenv('BUILD_NUMBER') ? System.getenv('BUILD_NUMBER') : System.getenv('TRAVIS_BUILD_NUMBER') ? System.getenv('TRAVIS_BUILD_NUMBER') : '0';
-}
-```
-to get the build number.
-
-Alternatively, you can do the following:
-```groovy
-
-// after `apply plugin: 'com.blamejared.modtemplate'`
-import com.blamejared.modtemplate.Utils
-    
-version = Utils.updatingVersion(mod_version)
-```
-
-Which will update the version like before.
-
-For 1.x:
-
-The Jar task manifest fails to get the updated version (for `Implementation-Version`), so it will be overridden with the actual project version, regardless of what content was there before.

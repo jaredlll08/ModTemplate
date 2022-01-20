@@ -1,1 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        maven {
+            url = "https://maven.blamejared.com"
+        }
+    }
+}
 rootProject.name = 'project'

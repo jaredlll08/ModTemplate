@@ -1,12 +1,11 @@
 package com.blamejared.modtemplate.extensions;
 
-import groovy.lang.*;
+import org.gradle.api.Action;
 
 public class ModTemplateExtension {
     
-    private ChangelogExtension changelog = new ChangelogExtension();
-    private VersionTrackerExtension versionTracker = new VersionTrackerExtension();
-    private WebhookExtension webhook = new WebhookExtension();
+    private final ChangelogExtension changelog = new ChangelogExtension();
+    private final VersionTrackerExtension versionTracker = new VersionTrackerExtension();
     private String mcVersion;
     private String curseHomepage;
     private String displayName;
@@ -22,15 +21,9 @@ public class ModTemplateExtension {
         return versionTracker;
     }
     
-    public WebhookExtension getWebhook() {
+    public void versionTracker(Action<? super VersionTrackerExtension> versionTrackerAction) {
         
-        return webhook;
-    }
-    
-    public void versionTracker(@DelegatesTo(VersionTrackerExtension.class) Closure<VersionTrackerExtension> versionTrackerClosure) {
-        
-        versionTrackerClosure.setDelegate(versionTracker);
-        versionTrackerClosure.call();
+        versionTrackerAction.execute(versionTracker);
         if(versionTracker.getHomepage() == null || versionTracker.getHomepage().trim().isEmpty()) {
             versionTracker.homepage(getCurseHomepage());
         }
@@ -39,16 +32,9 @@ public class ModTemplateExtension {
         }
     }
     
-    public void changelog(@DelegatesTo(ChangelogExtension.class) Closure<ChangelogExtension> changelogClosure) {
+    public void changelog(Action<? super ChangelogExtension> changelogAction) {
         
-        changelogClosure.setDelegate(changelog);
-        changelogClosure.call();
-    }
-    
-    public void webhook(@DelegatesTo(WebhookExtension.class) Closure<WebhookExtension> webhookClosure) {
-        
-        webhookClosure.setDelegate(webhook);
-        webhookClosure.call();
+        changelogAction.execute(changelog);
     }
     
     public String getMcVersion() {

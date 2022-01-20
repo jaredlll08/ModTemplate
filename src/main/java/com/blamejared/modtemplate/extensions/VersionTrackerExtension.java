@@ -1,5 +1,6 @@
 package com.blamejared.modtemplate.extensions;
 
+import com.blamejared.modtemplate.Utils;
 import com.blamejared.modtemplate.extensions.base.ConditionalExtension;
 import org.gradle.api.Project;
 
@@ -13,13 +14,12 @@ public class VersionTrackerExtension extends ConditionalExtension {
     
     public void supplement(Project project) {
         
-        this.endpoint = (String) project.getProperties().get("versionTrackerAPI");
-        this.author = (String) project.getProperties().get("versionTrackerAuthor");
-        this.homepage = (String) project.getProperties().get("versionTrackerHomepage");
-        this.uid = (String) project.getProperties().get("versionTrackerKey");
-        this.projectName = (String) project.getProperties().get("versionTrackerProjectName");
+        this.endpoint = Utils.locateProperty(project, "versionTrackerAPI");
+        this.author = Utils.locateProperty(project, "versionTrackerAuthor");
+        this.homepage = Utils.locateProperty(project, "versionTrackerHomepage");
+        this.uid = Utils.locateProperty(project, "versionTrackerKey");
+        this.projectName = Utils.locateProperty(project, "versionTrackerProjectName");
     }
-    
     
     public void endpoint(String endpoint) {
         

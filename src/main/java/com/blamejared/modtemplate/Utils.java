@@ -6,33 +6,49 @@ import org.gradle.api.Project;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public class Utils {
     
     public static String updatingVersion(String version) {
+        
+        return updatingVersion(version, ".");
+    }
+    
+    public static String updatingSemVersion(String version) {
+        
+        return updatingVersion(version, "+");
+    }
+    
+    public static String updatingVersion(String version, String separator) {
+        
         if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
-            version += "." + System.getenv(Constants.ENV_BUILD_NUMBER);
+            version += separator + System.getenv(Constants.ENV_BUILD_NUMBER);
         }
         return version;
     }
     
-    public static String updatingSemVersion(String version) {
-        if(System.getenv().containsKey(Constants.ENV_BUILD_NUMBER)) {
-            version += "+" + System.getenv(Constants.ENV_BUILD_NUMBER);
+    public static String locateProperty(Project project, String name) {
+        
+        if(project.hasProperty(name)) {
+            return (String) project.property(name);
         }
-        return version;
+        return System.getenv(name);
     }
     
     public static void injectSecrets(Project project) {
         
-        
-        String secret_file = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
+        String secretFile = System.getenv().getOrDefault(Constants.ENV_SECRET_FILE, Constants.PATH_SECRET_FILE);
         if(project.hasProperty(Constants.PROPERTY_SECRET_FILE)) {
-            secret_file = (String) project.property(Constants.PROPERTY_SECRET_FILE);
+            secretFile = (String) project.property(Constants.PROPERTY_SECRET_FILE);
         }
-        File secretsFile = project.file(secret_file);
-        project.getLogger().lifecycle("Injecting Secrets");
+        if(secretFile == null) {
+            project.getLogger().lifecycle("Provided secret file location was null!");
+            return;
+        }
+        File secretsFile = project.file(secretFile);
+        project.getLogger().lifecycle("Injecting Secrets from secrets file");
         if(secretsFile.exists()) {
             project.getLogger().lifecycle("Attempting to load secrets.");
             Object parsedSecrets = new JsonSlurper().parse(secretsFile);
@@ -49,24 +65,25 @@ public class Utils {
             
             project.getLogger()
                     .warn("Unable to load " + Constants.ENV_SECRET_FILE + "as it does not exist! Tried: ");
-            project.getLogger().warn(secret_file);
+            project.getLogger().warn(secretFile);
         } else {
             project.getLogger().lifecycle("Secrets file does not exist! Looked at: ");
-            project.getLogger().lifecycle(secret_file);
+            project.getLogger().lifecycle(secretFile);
             
         }
         project.getLogger().lifecycle("Done Injecting Secrets");
     }
     
     
-    public static String getCIChangelog(Project project, ModTemplateExtension extension) {
+    public static String getCIChangelog(Project project) {
         
         try {
+            ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
+            
             ByteArrayOutputStream stdout = new ByteArrayOutputStream();
             String gitHash = System.getenv("GIT_COMMIT");
             String gitPrevHash = System.getenv("GIT_PREVIOUS_COMMIT");
-            String repo = extension.getChangelog()
-                    .getRepo() + "/commit/";
+            String repo = extension.getChangelog().getRepo() + "/commit/";
             if(gitHash != null && gitPrevHash != null) {
                 project.exec(execSpec -> execSpec.commandLine("git")
                         .args("log", "--pretty=tformat:- [%s](" + repo + "%H) - %aN ", gitPrevHash + "..." + gitHash)
@@ -83,6 +100,41 @@ public class Utils {
         } catch(Exception ignored) {
             return "Unavailable";
         }
+    }
+    
+    public static String getFullChangelog(Project project) {
+        
+        ModTemplateExtension extension = project.getExtensions().findByType(ModTemplateExtension.class);
+        if(extension == null) {
+            return "Cannot generate a changelog for projects with the modtemplate extension!";
+        }
+        
+        String[] firstCommit = new String[] {extension.getChangelog().getFirstCommit()};
+        
+        StringBuilder builder = new StringBuilder("### Current version: ").append(project.getVersion());
+        try(ByteArrayOutputStream firstCommitOS = new ByteArrayOutputStream();
+            ByteArrayOutputStream changesOS = new ByteArrayOutputStream()) {
+            project.exec(execSpec -> execSpec.commandLine("git")
+                    .args("log", "-i", "--grep=" + extension.getChangelog()
+                            .getIncrementRegex(), "--grep=initial\\scommit", "--pretty=tformat:%H", "--date=local", extension
+                            .getChangelog()
+                            .getFirstCommit() + "..@{0}")
+                    .setStandardOutput(firstCommitOS));
+            String foundCommit = firstCommitOS.toString();
+            if(foundCommit.trim().contains("\n")) {
+                firstCommit[0] = foundCommit.split("\n")[0].trim();
+            }
+            
+            project.exec(execSpec -> execSpec.commandLine("git")
+                    .args("log", "--pretty=tformat:- [%s](" + extension.getChangelog()
+                            .getRepo() + "/commit/%H) - %aN - %cd", "--max-parents=1", "--date=local", firstCommit[0] + "..@")
+                    .setStandardOutput(changesOS));
+            
+            builder.append("\n").append(changesOS);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
     
 }
