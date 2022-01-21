@@ -77,21 +77,26 @@ public class Utils {
     
     public static String getCIChangelog(Project project) {
         
+        ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
+        
+        return getCIChangelog(project, extension.getChangelog().getRepo());
+    }
+    
+    public static String getCIChangelog(Project project, String repository) {
+        
         try {
-            ModTemplateExtension extension = project.getExtensions().getByType(ModTemplateExtension.class);
-            
             ByteArrayOutputStream stdout = new ByteArrayOutputStream();
             String gitHash = System.getenv("GIT_COMMIT");
             String gitPrevHash = System.getenv("GIT_PREVIOUS_COMMIT");
-            String repo = extension.getChangelog().getRepo() + "/commit/";
+            String commitLink = repository + "/commit/";
             if(gitHash != null && gitPrevHash != null) {
                 project.exec(execSpec -> execSpec.commandLine("git")
-                        .args("log", "--pretty=tformat:- [%s](" + repo + "%H) - %aN ", gitPrevHash + "..." + gitHash)
+                        .args("log", "--pretty=tformat:- [%s](" + commitLink + "%H) - %aN ", gitPrevHash + "..." + gitHash)
                         .setStandardOutput(stdout));
                 return stdout.toString().trim();
             } else if(gitHash != null) {
                 project.exec(execSpec -> execSpec.commandLine("git")
-                        .args("log", "--pretty=tformat:- [%s](" + repo + "%H) - %aN ", "-1", gitHash)
+                        .args("log", "--pretty=tformat:- [%s](" + commitLink + "%H) - %aN ", "-1", gitHash)
                         .setStandardOutput(stdout));
                 return stdout.toString().trim();
             } else {
