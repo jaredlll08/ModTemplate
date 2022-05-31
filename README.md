@@ -1,5 +1,9 @@
 # ModTemplate
 
+A gradle plugin that provides helpers for common tasks, such as updating versions automatically, generating a changelog based on git commits and updating version trackers.
+
+Not to be confused with https://github.com/jaredlll08/MultiLoader-Template
+
 # Using
 
 ```groovy
