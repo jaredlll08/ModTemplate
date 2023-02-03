@@ -6,9 +6,11 @@ Not to be confused with https://github.com/jaredlll08/MultiLoader-Template
 
 # Using
 
+Latest versions can be found at [the maven listing](https://maven.blamejared.com/com/blamejared/modtemplate/com.blamejared.modtemplate.gradle.plugin/)
+
 ```groovy
 plugins {
-    id 'net.blamejared.modtemplate' version 'version_here'
+    id 'com.blamejared.modtemplate' version 'version_here'
 }
 ```
 
