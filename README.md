@@ -4,6 +4,8 @@ A gradle plugin that provides helpers for common tasks, such as updating version
 
 Not to be confused with https://github.com/jaredlll08/MultiLoader-Template
 
+# This has been superseeded by https://github.com/jaredlll08/gradle-mod-utils
+
 # Using
 
 Latest versions can be found at [the maven listing](https://maven.blamejared.com/com/blamejared/modtemplate/com.blamejared.modtemplate.gradle.plugin/)
